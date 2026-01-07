@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Book for Samia 💖</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .motive {
+            background: white;
+            color: #ff6b9d;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid #ff6b9d;
+        }
+
+        .motive h2 {
+            font-size: 1.8rem;
+            line-height: 1.6;
+        }
+
+        .book-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 5px solid #ff6b9d;
+        }
+
+        .page.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            color: #ff6b9d;
+            margin-bottom: 30px;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .cover img {
+            border-radius: 15px;
+            margin: 20px 0;
+            max-width: 70%;
+            border: 5px solid #ffde7d;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-content h3 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .page-content p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 15px 0;
+            color: #444;
+            max-width: 90%;
+        }
+
+        .special-quote {
+            background: linear-gradient(45deg, #ffde7d, #ffcc5c);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #5d3a9b;
+            border: 3px solid #ff6b9d;
+        }
+
+        .friendship-icon {
+            font-size: 3rem;
+            color: #ff6b9d;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .nav-buttons {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .page-counter {
+            position: absolute;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #5d3a9b;
+            font-weight: 600;
+            font-size: 1.2rem;
+            background: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #acceptBtn {
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.4rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        #acceptBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.6);
+        }
+
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.7;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 850px) {
+            .book-container {
+                width: 95%;
+                height: 400px;
+            }
+            
+            .cover h1 {
+                font-size: 2.2rem;
+            }
+            
+            .page-content p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .book-container {
+                height: 350px;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+            
+            .cover h1 {
+                font-size: 1.8rem;
+            }
+            
+            .nav-buttons {
+                bottom: -60px;
+            }
+            
+            .nav-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="motive">
+        <h2>
+            A Special Book for My Amazing Best Friend Samia! 💖<br>
+            This celebrates our wonderful friendship! ✨
+        </h2>
+    </div>
+    
+    <div class="book-container">
+        <!-- Page 1: Cover -->
+        <div class="page cover active" id="page1">
+            <h1>For My Best Friend<br>Samia! 💝</h1>
+            <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Best Friends" height="250">
+            <div class="friendship-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2>From Your Best Friend Forever</h2>
+            <p>Click Next to start reading! →</p>
+        </div>
+        
+        <!-- Page 2 -->
+        <div class="page page-content" id="page2">
+            <div class="special-quote">
+                "A true friend is the greatest of all blessings."<br>
+                <small>- Francois de La Rochefoucauld</small>
+            </div>
+            <p>Dear Samia, this friendship book is dedicated to you! 💖🤗</p>
+            <p>
+                Every moment with you is special and meaningful<br>
+                Thank you for being such an amazing friend! 👭💕
+            </p>
+            <div class="friendship-icon">
+                <i class="fas fa-hands-heart"></i>
+            </div>
+        </div>
+        
+        <!-- Page 3 -->
+        <div class="page page-content" id="page3">
+            <h3>Our First Real Conversation 🌱</h3>
+            <p>
+                I'll always cherish the memory of our first proper talk!<br>
+                That conversation planted the seed for this beautiful friendship.
+            </p>
+            <p>
+                You coming into my life has been one of the best things<br>
+                I treasure our bond to the moon and back! 🌙✨
+            </p>
+            <div class="friendship-icon">
+                <i class="fas fa-star"></i>
+            </div>
+        </div>
+        
+        <!-- Page 4 -->
+        <div class="page page-content" id="page4">
+            <h3>Special Memories ✨</h3>
+            <p>
+                Remember November? That was the best month! 😊<br>
+                We had that amazing, hours-long conversation!<br>
+                I'm so grateful to have a friend like you 😭
+            </p>
+            <div class="special-quote">
+                Your smile brightens even the darkest days ☀️<br>
+                Your laughter is infectious and brings me joy!
+            </div>
+        </div>
+        
+        <!-- Page 5 -->
+        <div class="page page-content" id="page5">
+            <h3>Friendship Poetry 📝</h3>
+            <div class="special-quote">
+                In a world full of temporary things,<br>
+                you are a permanent feeling. ❣️✨
+            </div>
+            <p>
+                Side by side or miles apart,<br>
+                true friends are always close to the heart. 💝
+            </p>
+            <p>
+                We didn't realize we were making memories,<br>
+                we just knew we were having unlimited fun. 🖤✨
+            </p>
+            <div class="friendship-icon">
+                <i class="fas fa-feather-alt"></i>
+            </div>
+        </div>
+        
+        <!-- Page 6 -->
+        <div class="page page-content" id="page6">
+            <h3>More Thoughts 💭</h3>
+            <p>
+                I want to share everything with you forever<br>
+                All the laughter, dreams, and quiet moments 🤗
+            </p>
+            <p>
+                You've become such an important part of my life<br>
+                that I can't imagine navigating this world without you
+            </p>
+            <div class="special-quote">
+                You're the gift that keeps on giving every single day! 🎁✨<br>
+                People said 2023 was challenging, but mine was amazing because of you!
+            </div>
+        </div>
+        
+        <!-- Page 7: Final -->
+        <div class="page page-content" id="page7">
+            <h2>Final Page 💖</h2>
+            <p style="font-size: 1.5rem; color: #ff6b9d; font-weight: bold;">
+                I appreciate you SO MUCH Samia! 💖
+            </p>
+            <div class="special-quote">
+                "Friends are the family we choose for ourselves."<br>
+                <small>- Edna Buchanan</small>
+            </div>
+            <p>
+                You are the most precious gift in my life 🎁<br>
+                I'll always cherish and protect our friendship 😭🤞
+            </p>
+            <p>
+                Just remember: You're enough, you're worthy,<br>
+                and you're an incredible human being! 🌟
+            </p>
+            <img src="https://media.tenor.com/zGm5acSjHCIAAAAM/cat-begging.gif" 
+                 alt="Please accept!" height="130" style="border-radius: 10px;">
+            <br>
+            <button id="acceptBtn">Yes, I absolutely love it! 🥺💖</button>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button class="nav-btn prev-btn" onclick="prevPage()">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next-btn" onclick="nextPage()">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    
+    <div class="page-counter" id="pageCounter">Page 1 of 7</div>
+    
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <script>
+        // Simple page navigation
+        let currentPage = 1;
+        const totalPages = 7;
+        
+        // Create floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const hearts = ['💖', '💕', '💗', '💓', '💞', '💝'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = Math.random() * 10 + 10 + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                container.appendChild(heart);
+            }
+        }
+        
+        // Show specific page
+        function showPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show current page
+            const page = document.getElementById(`page${pageNumber}`);
+            if (page) {
+                page.classList.add('active');
+            }
+            
+            // Update page counter
+            document.getElementById('pageCounter').textContent = `Page ${pageNumber} of ${totalPages}`;
+            
+            // Update button states
+            document.querySelector('.prev-btn').disabled = pageNumber === 1;
+            document.querySelector('.next-btn').disabled = pageNumber === totalPages;
+            
+            // Play page sound
+            playPageSound();
+        }
+        
+        // Next page
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+        
+        // Previous page
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+        
+        // Page sound effect
+        function playPageSound() {
+            try {
+                // Simple page turn sound
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                // Fallback - no sound if not supported
+            }
+        }
+        
+        // Initialize
+        window.onload = function() {
+            createFloatingHearts();
+            showPage(1);
+            
+            // Add click to accept button
+            document.getElementById('acceptBtn').addEventListener('click', function() {
+                const messages = [
+                    "💖 Thank you Samia! Our friendship means the world to me! 💖",
+                    "🎉 You're the most amazing friend anyone could ask for! 🎉",
+                    "✨ I'm incredibly lucky to have you in my life! ✨",
+                    "💕 Our friendship is my greatest treasure and joy! 💕",
+                    "🌟 You make my world brighter every single day! 🌟"
+                ];
+                
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                alert(randomMessage);
+                
+                // Change button appearance
+                this.innerHTML = "🎊 Friendship Accepted! 🎊";
+                this.style.background = "linear-gradient(45deg, #FF9800, #FF5722)";
+                
+                // Create celebration
+                createCelebration();
+            });
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextPage();
+                } else if (e.key === 'ArrowLeft') {
+                    prevPage();
+                }
+            });
+        };
+        
+        // Celebration effect
+        function createCelebration() {
+            // Create hearts explosion
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💖';
+                    heart.style.position = 'fixed';
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '35px';
+                    heart.style.zIndex = '9999';
+                    heart.style.opacity = '1';
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.textShadow = '0 0 20px rgba(255, 255, 255, 0.8)';
+                    
+                    document.body.appendChild(heart);
+                    
+                    // Animate heart
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 150 + Math.random() * 250;
+                    const targetX = Math.cos(angle) * distance;
+                    const targetY = Math.sin(angle) * distance;
+                    
+                    const animation = heart.animate([
+                        { 
+                            transform: 'translate(-50%, -50%) scale(1)', 
+                            opacity: 1 
+                        },
+                        { 
+                            transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(0.2)`, 
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: 2000,
+                        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                    });
+                    
+                    animation.onfinish = () => heart.remove();
+                }, i * 80);
+            }
+        }
+        
+        // Make functions available globally
+        window.nextPage = nextPage;
+        window.prevPage = prevPage;
+        window.showPage = showPage;
+    </script>
+</body>
+</html>
